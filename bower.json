@@ -1,0 +1,15 @@
+{
+  "name": "django-boilerplate",
+  "authors": [
+    "Patrick Mazulo <mazulo@dunderlabs.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "COMMERCIAL",
+  "homepage": "",
+  "private": false,
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "semantic": "^2.3.3"
+  }
+}
