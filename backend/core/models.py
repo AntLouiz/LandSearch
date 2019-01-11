@@ -45,7 +45,19 @@ class ScrapingOrder(models.Model):
         Coordinates,
         on_delete=models.CASCADE
     )
-    is_scraped = models.BooleanField(default=False)
+
+    choices = (
+        ('Waiting', 'waiting'),
+        ('Scraping', 'scraping'),
+        ('Finished', 'finished'),
+        ('No result', 'no_result')
+    )
+
+    status = models.CharField(
+        max_length=100,
+        choices=choices,
+        default=choices[0][1]
+    )
     scraped_date = models.DateField(auto_now=True)
 
     class Meta:
@@ -53,7 +65,7 @@ class ScrapingOrder(models.Model):
         verbose_name_plural = "Scraping Orders"
 
     def __str__(self):
-        return "{}, scraped: {}".format(
+        return "{}, Status: {}".format(
             self.key,
-            self.is_scraped
+            self.status
         )
