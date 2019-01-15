@@ -24,13 +24,20 @@ class Coordinates(models.Model):
     )
     latitude = models.FloatField()
     longitude = models.FloatField()
+    title = models.CharField(max_length=100)
+    description = models.TextField(
+        max_length=200,
+        blank=True,
+        null=True
+    )
 
     class Meta:
         verbose_name = "Coordinates"
         verbose_name_plural = "Coordinates"
 
     def __str__(self):
-        return "Lat: {}, Long: {}".format(
+        return "{}, Lat: {}, Long: {}".format(
+            self.title,
             self.latitude,
             self.longitude
         )
