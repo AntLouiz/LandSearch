@@ -4,7 +4,7 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from .models import Shapefile, Coordinates, ScrapingOrder
 from .utils import check_uploaded_file, check_coordinates
-from .forms import CoordinatesForm
+from .forms import OrderForm
 
 
 gauth = GoogleAuth()
@@ -16,8 +16,8 @@ drive = GoogleDrive(gauth)
 
 def upload_file(request):
     if request.method == 'POST':
-        coordinates_form = CoordinatesForm(request.POST, request.FILES)
-        if coordinates_form.is_valid():
+        order_form = OrderForm(request.POST, request.FILES)
+        if order_form.is_valid():
             latitude = request.POST['latitude']
             longitude = request.POST['longitude']
 
@@ -64,9 +64,9 @@ def upload_file(request):
                 return HttpResponseRedirect('/')
 
     else:
-        coordinates_form = CoordinatesForm()
+        order_form = OrderForm()
 
     context = {
-        'form': coordinates_form
+        'form': order_form
     }
     return render(request, 'core/index.html', context)
