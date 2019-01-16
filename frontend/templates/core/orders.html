@@ -56,10 +56,12 @@
                        Longitude: {{order.coordinates.longitude}}
                     </a>
                     <p>
-                        <a>
+                      {% if order.raster.download_link %}
+                        <a href="{{order.raster.download_link}}">
                             <i class="download icon"></i>
                             Download file
                         </a>
+                      {% endif %}
                     </p>
                   </div>
                 </div>

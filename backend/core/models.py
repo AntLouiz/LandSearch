@@ -18,6 +18,9 @@ class Raster(models.Model):
     thumbnail_link = models.CharField(
         max_length=200
     )
+    download_link = models.CharField(
+        max_length=200
+    )
 
     class Meta:
         verbose_name = "Raster"
