@@ -10,7 +10,17 @@
         <div class="ui grid">
             {% for order in orders %}
                 <div class="four wide column">
-                <div class="ui card">
+                <div class="
+                  ui card
+
+                  {% if order.status == 'finished' %}
+                    green
+                  {% elif order.status == 'waiting'%}
+                    blue
+                  {% else %}
+                    red
+                  {% endif %}
+                ">
                   <div class="image">
                     {% if order.raster %}
                         <img
@@ -23,6 +33,9 @@
                   </div>
                   <div class="content">
                     <a class="header">{{order.coordinates.title}}</a>
+                    <div class="meta">
+                      <span class="status">Status: {{order.status}}</span>
+                    </div>
                     <div class="meta">
                       <span class="date">Colected in 10/11/2013</span>
                     </div>
