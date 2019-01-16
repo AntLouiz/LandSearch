@@ -13,6 +13,26 @@ class Shapefile(models.Model):
         return self.key
 
 
+class Raster(models.Model):
+    key = models.CharField(max_length=100)
+    thumbnail_link = models.CharField(
+        max_length=200
+    )
+    download_link = models.CharField(
+        max_length=200
+    )
+    download_date = models.DateField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "Raster"
+        verbose_name_plural = "Rasters"
+
+    def __str__(self):
+        return self.thumbnail_link
+
+
 class Coordinates(models.Model):
     key = models.UUIDField(
         default=uuid.uuid4,
