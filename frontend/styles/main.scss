@@ -19,3 +19,14 @@
         color: white;
     }
 }
+
+
+.image {
+    img {
+        display: block;
+        max-width:300px;
+        max-height:220px;
+        width: auto;
+        height: auto;
+    }
+}
