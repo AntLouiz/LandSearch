@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    LandSearch
+{% endblock title %}
+
+
+{% block content %}
+    <div class="ui four column centered grid">
+        <div class="row">
+            <div class="eight wide column">
+                <form id='order-form' class="ui form" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <span>
+                        <h1 class="ui header">Insert the your interest region.</h1>
+                    </span>
+                    {% for field in form %}
+                        <div class="field">
+                            <p>
+                                <label>{{field.label}}:</label>
+                                {{field}}
+                            </p>
+                        </div>
+                    {% endfor %}
+                    <button
+                        id='submit-button'
+                        class="ui button"
+                        type="submit"
+                    >Submit</button>
+                </form>  
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(() => {
+            $('#order-form').submit(function(event) {
+               $('#submit-button').addClass('loading');
+            });
+        });
+    </script>
+{% endblock content %}

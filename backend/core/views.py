@@ -1,10 +1,13 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.views.generic.list import ListView
+from django.views.generic import TemplateView
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from .models import Shapefile, Coordinates, ScrapingOrder
 from .utils import check_uploaded_file, check_coordinates
-from .forms import CoordinatesForm
+from .forms import OrderForm
+
 
 
 gauth = GoogleAuth()
@@ -14,10 +17,14 @@ gauth.LocalWebserverAuth()
 drive = GoogleDrive(gauth)
 
 
+class HomeView(TemplateView):
+    template_name = "core/home.html"
+
+
 def upload_file(request):
     if request.method == 'POST':
-        coordinates_form = CoordinatesForm(request.POST, request.FILES)
-        if coordinates_form.is_valid():
+        order_form = OrderForm(request.POST, request.FILES)
+        if order_form.is_valid():
             latitude = request.POST['latitude']
             longitude = request.POST['longitude']
 
@@ -52,6 +59,7 @@ def upload_file(request):
                 )
 
                 coordinates = Coordinates.objects.create(
+                    title=request.POST['title'],
                     latitude=request.POST['latitude'],
                     longitude=request.POST['longitude'],
                     shapefile=shapefile
@@ -64,9 +72,24 @@ def upload_file(request):
                 return HttpResponseRedirect('/')
 
     else:
-        coordinates_form = CoordinatesForm()
+        order_form = OrderForm()
 
     context = {
-        'form': coordinates_form
+        'form': order_form
     }
-    return render(request, 'core/index.html', context)
+    return render(request, 'core/new_order.html', context)
+
+
+class OrdersListView(ListView):
+
+    template_name = 'core/orders.html'
+    model = ScrapingOrder
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        orders = ScrapingOrder.objects.all()
+
+        context['orders'] = orders
+
+        return context

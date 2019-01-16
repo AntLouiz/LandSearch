@@ -13,8 +13,12 @@
 		<link rel="stylesheet" type="text/css" href="{% static 'semantic/dist/semantic.css' %}">
 		<link rel="stylesheet" type="text/x-scss" href="{% static 'styles/main.scss' %}">
 	{% endcompress %}
+	{% compress js %}
+		<script type="text/javascript" src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+	{% endcompress %}
 </head>
 <body>
+	{% include "menu.html" %}
 	<main id="{{ view.title|slugify }}">
 		{% block content %}{% endblock content %}
 	</main>

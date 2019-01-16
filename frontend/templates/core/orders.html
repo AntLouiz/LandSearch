@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    LandSearch
+{% endblock title %}
+
+
+{% block content %}
+        <div class="ui grid container">
+            {% for order in orders %}
+                <div class="four wide column">
+                <div class="
+                  ui card
+
+                  {% if order.status == 'finished' %}
+                    green
+                  {% elif order.status == 'waiting'%}
+                    blue
+                  {% else %}
+                    red
+                  {% endif %}
+                ">
+                  <div class="image">
+                    {% if order.raster %}
+                        <img
+                            src="{{order.raster.thumbnail_link}}"
+                            alt=""
+                        >
+                    {% else %}
+                        <img class="disabled medium ui image" src="{% static '/images/default.png' %}">
+                    {% endif %}
+                  </div>
+                  <div class="content">
+                    <a class="header">{{order.coordinates.title}}</a>
+                    <div class="meta">
+                      <span class="status">Status: {{order.status}}</span>
+                    </div>
+                    <div class="meta">
+                      <span class="date">Colected in 10/11/2013</span>
+                    </div>
+                    <div class="description">
+                      {% if order.coordinates.description %}
+                          {{order.coordinates.description}}
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="extra content">
+                    <a>
+                      <i class="globe icon"></i>
+                       Latitude: {{order.coordinates.latitude}}
+                    </a>
+                    <br>
+                    <a>
+                      <i class="globe icon"></i>
+                       Longitude: {{order.coordinates.longitude}}
+                    </a>
+                    <p>
+                        <a>
+                            <i class="download icon"></i>
+                            Download file
+                        </a>
+                    </p>
+                  </div>
+                </div>
+                </div>
+            {% endfor %}
+        </div>
+{% endblock content %}

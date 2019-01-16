@@ -2,7 +2,7 @@ from django import forms
 from .models import Coordinates
 
 
-class CoordinatesForm(forms.ModelForm):
+class OrderForm(forms.ModelForm):
     file = forms.FileField()
 
     class Meta:
