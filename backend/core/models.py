@@ -21,6 +21,11 @@ class Raster(models.Model):
     download_link = models.CharField(
         max_length=200
     )
+    download_date = models.DateField(
+        blank=True,
+        null=True,
+        auto_now_add=True
+    )
 
     class Meta:
         verbose_name = "Raster"

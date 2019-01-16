@@ -37,7 +37,13 @@
                       <span class="status">Status: {{order.status}}</span>
                     </div>
                     <div class="meta">
-                      <span class="date">Colected in 10/11/2013</span>
+                        {% if order.status == 'waiting' %}
+                            <span class="date">Collecting...</span>
+                        {% elif order.raster.download_date %}
+                            <span class="date">Colected in {{order.raster.download_date}}</span>
+                        {% else %}
+                            Region not collected.
+                        {% endif %}
                     </div>
                     <div class="description">
                       {% if order.coordinates.description %}
