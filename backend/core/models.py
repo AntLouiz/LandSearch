@@ -73,6 +73,13 @@ class ScrapingOrder(models.Model):
         on_delete=models.CASCADE
     )
 
+    raster = models.ForeignKey(
+        Raster,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
     choices = (
         ('Waiting', 'waiting'),
         ('Scraping', 'scraping'),

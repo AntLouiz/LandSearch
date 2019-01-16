@@ -4,5 +4,7 @@ from . import views
 app_name = 'core'
 
 urlpatterns = [
-    path('', views.upload_file, name='index'),
+    path('', views.HomeView.as_view(), name='home'),
+    path('get_region', views.upload_file, name='new_order'),
+    path('orders', views.OrdersListView.as_view(), name='orders')
 ]

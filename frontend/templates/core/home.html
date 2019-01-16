@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    LandSearch
+{% endblock title %}
+
+
+{% block content %}
+    <center class='worked'>
+        <h1 class="gray">Welcome to LandSearch</h1>
+        <a class="ui primary button" href="{% url 'core:new_order' %}">
+            Get a region
+        </a>
+    </center>
+{% endblock content %}
