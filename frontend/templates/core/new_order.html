@@ -35,6 +35,7 @@
     <script>
         $(document).ready(() => {
             $('#order-form').submit(function(event) {
+               $(this).addClass('loading');
                $('#submit-button').addClass('loading');
             });
         });
