@@ -69,10 +69,12 @@
                       <i class="globe icon"></i>
                        Longitude: {{order.coordinates.longitude}}
                     </a>
+                  </div>
+                  <div class="content">
                     <p>
                       {% if order.raster.download_link %}
                         <a href="{{order.raster.download_link}}">
-                            <i class="download icon"></i>
+                            <i class="download icon blue"></i>
                             Download file
                         </a>
                       {% endif %}
