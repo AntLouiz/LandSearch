@@ -21,7 +21,16 @@
                     red
                   {% endif %}
                 ">
-                  <div class="image">
+
+
+
+                <div class="content">
+                    <a class="header">{{order.coordinates.title}}</a>
+                        <a>
+                            <i class="right floated trash icon red"></i>
+                        </a>
+                </div>
+                <div class="image">
                     {% if order.raster %}
                         <img
                             src="{{order.raster.thumbnail_link}}"
@@ -32,7 +41,6 @@
                     {% endif %}
                   </div>
                   <div class="content">
-                    <a class="header">{{order.coordinates.title}}</a>
                     <div class="meta">
                       <span class="status">Status: {{order.status}}</span>
                     </div>
