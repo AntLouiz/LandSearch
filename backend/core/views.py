@@ -1,5 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse_lazy as r
+from django.views.generic.edit import DeleteView
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from pydrive.auth import GoogleAuth
@@ -93,3 +95,9 @@ class OrdersListView(ListView):
         context['orders'] = orders
 
         return context
+
+class OrderDeleteView(DeleteView):
+    model = ScrapingOrder
+    template_name = 'core/order_confirm_delete.html'
+    success_url = r('core:orders')
+

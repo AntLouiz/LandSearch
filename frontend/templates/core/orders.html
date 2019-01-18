@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}
     LandSearch
 {% endblock title %}
@@ -26,7 +25,7 @@
 
                 <div class="content">
                     <a class="header">{{order.coordinates.title}}</a>
-                        <a>
+                    <a href="{% url 'core:delete_order' order.id %}">
                             <i class="right floated trash icon red"></i>
                         </a>
                 </div>
