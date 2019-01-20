@@ -4,7 +4,7 @@ from django.db import models
 
 class Shapefile(models.Model):
     key = models.CharField(max_length=100)
-
+    is_active = models.BooleanField(default=True)
     class Meta:
         verbose_name = "Shapefile"
         verbose_name_plural = "Shapefiles"
@@ -26,6 +26,8 @@ class Raster(models.Model):
         null=True,
         auto_now_add=True
     )
+
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "Raster"
@@ -52,6 +54,8 @@ class Coordinates(models.Model):
         blank=True,
         null=True
     )
+
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "Coordinates"
@@ -81,6 +85,8 @@ class ScrapingOrder(models.Model):
         blank=True,
         null=True
     )
+
+    is_active = models.BooleanField(default=True)
 
     choices = (
         ('Waiting', 'waiting'),
