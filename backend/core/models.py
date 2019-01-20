@@ -4,10 +4,15 @@ from django.db import models
 
 class Shapefile(models.Model):
     key = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "Shapefile"
         verbose_name_plural = "Shapefiles"
+
+    def disable(self):
+        self.is_active = False
+        self.save()
 
     def __str__(self):
         return self.key
@@ -27,9 +32,15 @@ class Raster(models.Model):
         auto_now_add=True
     )
 
+    is_active = models.BooleanField(default=True)
+
     class Meta:
         verbose_name = "Raster"
         verbose_name_plural = "Rasters"
+
+    def disable(self):
+        self.is_active = False
+        self.save()
 
     def __str__(self):
         return self.thumbnail_link
@@ -53,9 +64,15 @@ class Coordinates(models.Model):
         null=True
     )
 
+    is_active = models.BooleanField(default=True)
+
     class Meta:
         verbose_name = "Coordinates"
         verbose_name_plural = "Coordinates"
+
+    def disable(self):
+        self.is_active = False
+        self.save()
 
     def __str__(self):
         return "{}, Lat: {}, Long: {}".format(
@@ -82,6 +99,8 @@ class ScrapingOrder(models.Model):
         null=True
     )
 
+    is_active = models.BooleanField(default=True)
+
     choices = (
         ('Waiting', 'waiting'),
         ('Scraping', 'scraping'),
@@ -99,6 +118,13 @@ class ScrapingOrder(models.Model):
     class Meta:
         verbose_name = "Scraping Order"
         verbose_name_plural = "Scraping Orders"
+
+    def disable(self):
+        self.is_active = False
+        self.raster.disable()
+        self.coordinates.disable()
+        self.coordinates.shapefile.disable()
+        self.save()
 
     def __str__(self):
         return "{}, Status: {}".format(

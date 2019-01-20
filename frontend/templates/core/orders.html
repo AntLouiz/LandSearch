@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}
     LandSearch
 {% endblock title %}
@@ -21,7 +20,16 @@
                     red
                   {% endif %}
                 ">
-                  <div class="image">
+
+
+
+                <div class="content">
+                    <a class="header">{{order.coordinates.title}}</a>
+                    <a href="{% url 'core:delete_order' order.id %}">
+                            <i class="right floated trash icon red"></i>
+                        </a>
+                </div>
+                <div class="image">
                     {% if order.raster %}
                         <img
                             src="{{order.raster.thumbnail_link}}"
@@ -32,7 +40,6 @@
                     {% endif %}
                   </div>
                   <div class="content">
-                    <a class="header">{{order.coordinates.title}}</a>
                     <div class="meta">
                       <span class="status">Status: {{order.status}}</span>
                     </div>
@@ -61,16 +68,22 @@
                       <i class="globe icon"></i>
                        Longitude: {{order.coordinates.longitude}}
                     </a>
+                  </div>
+                  <div class="content">
                     <p>
                       {% if order.raster.download_link %}
                         <a href="{{order.raster.download_link}}">
-                            <i class="download icon"></i>
+                            <i class="download icon blue"></i>
                             Download file
                         </a>
                       {% endif %}
                     </p>
                   </div>
                 </div>
+                </div>
+            {% empty %}
+                <div>
+                   No orders founded.
                 </div>
             {% endfor %}
         </div>

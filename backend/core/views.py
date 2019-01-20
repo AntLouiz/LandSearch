@@ -1,5 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse_lazy as r
+from django.views.generic.edit import DeleteView
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from pydrive.auth import GoogleAuth
@@ -88,8 +90,31 @@ class OrdersListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        orders = ScrapingOrder.objects.all()
+        orders = ScrapingOrder.objects.filter(is_active=True).all()
 
         context['orders'] = orders
 
         return context
+
+class OrderDeleteView(DeleteView):
+    model = ScrapingOrder
+    template_name = 'core/order_confirm_delete.html'
+    success_url = r('core:orders')
+
+    def delete(self, request, *args, **kwargs):
+        success_url = self.success_url
+        self.object = self.get_object()
+        shapefile_id = self.object.coordinates.shapefile.key
+        raster = self.object.raster
+
+        shapefile = drive.CreateFile({'id': shapefile_id})
+        shapefile.Trash()
+
+        if raster:
+            raster_file = drive.CreateFile({'id': raster.key})
+            raster_file.Trash()
+
+        self.object.disable()
+
+        return HttpResponseRedirect(success_url)
+
