@@ -101,3 +101,17 @@ class OrderDeleteView(DeleteView):
     template_name = 'core/order_confirm_delete.html'
     success_url = r('core:orders')
 
+    def delete(self, request, *args, **kwargs):
+        order = self.get_object()
+        shapefile_id = order.coordinates.shapefile.key
+        raster = order.raster
+
+        shapefile = drive.CreateFile({'id': shapefile_id})
+        shapefile.Trash()
+
+        if raster:
+            raster_file = drive.CreateFile({'id': raster.key})
+            raster_file.Trash()
+
+        return super(OrderDeleteView, self).delete(request, args, kwargs)
+
