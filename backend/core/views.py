@@ -90,7 +90,7 @@ class OrdersListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        orders = ScrapingOrder.objects.all()
+        orders = ScrapingOrder.objects.filter(is_active=True).all()
 
         context['orders'] = orders
 
@@ -102,9 +102,10 @@ class OrderDeleteView(DeleteView):
     success_url = r('core:orders')
 
     def delete(self, request, *args, **kwargs):
-        order = self.get_object()
-        shapefile_id = order.coordinates.shapefile.key
-        raster = order.raster
+        success_url = self.success_url
+        self.object = self.get_object()
+        shapefile_id = self.object.coordinates.shapefile.key
+        raster = self.object.raster
 
         shapefile = drive.CreateFile({'id': shapefile_id})
         shapefile.Trash()
@@ -113,5 +114,7 @@ class OrderDeleteView(DeleteView):
             raster_file = drive.CreateFile({'id': raster.key})
             raster_file.Trash()
 
-        return super(OrderDeleteView, self).delete(request, args, kwargs)
+        self.object.disable()
+
+        return HttpResponseRedirect(success_url)
 
