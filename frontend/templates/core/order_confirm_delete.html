@@ -1,4 +1,35 @@
-<form method="post">{% csrf_token %}
-    <p>Are you sure you want to delete "{{ object }}"?</p>
-    <input type="submit" value="Confirm">
-</form>
+{% extends 'base.html'%}
+{% load static %}
+
+{% block content %}
+  <form method="post" class="center-screen">
+      {% csrf_token %}
+  <div class="ui modal active">
+    <i class="close icon"></i>
+    <div class="header">
+      <p>Are you sure you want to delete "{{ object.coordinates.title }}"?</p>
+    </div>
+    <div class="image content">
+      <div class="ui medium image">
+        {% if order.raster %}
+            <img
+                src="{{object.raster.thumbnail_link}}"
+                alt=""
+            >
+        {% else %}
+            <img class="disabled medium ui image" src="{% static '/images/default.png' %}">
+        {% endif %}
+      </div>
+      <div class="description">
+        <div class="ui header">After the deleting this file will be in the archive section.</div>
+      </div>
+    </div>
+    <div class="actions">
+        <a href="{% url 'core:orders' %}" class="ui black deny button">
+        Nope
+      </a>
+      <input class="ui positive right button" type="submit" value="Confirm">
+    </div>
+  </div>
+  </form>
+{% endblock content %}
