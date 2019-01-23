@@ -81,10 +81,19 @@
                   </div>
                 </div>
                 </div>
-            {% empty %}
-                <div>
-                   No orders founded.
-                </div>
             {% endfor %}
         </div>
+        {% if not orders %}
+            <div class="center-screen wide column">
+            <div class="ui info message">
+              <div class="header">
+                No orders founded.
+              </div>
+              <div class="content">
+                  To make a new order, click on this
+                      <a class="ui button" href="{% url 'core:new_order'%}">get region</a> button.
+              </div>
+              </div>
+            </div>
+        {% endif %}
 {% endblock content %}

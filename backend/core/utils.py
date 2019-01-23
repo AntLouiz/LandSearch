@@ -14,15 +14,3 @@ def check_uploaded_file(file):
 
     return True
 
-
-def check_coordinates(latitude, longitude):
-    latitude = float(latitude)
-    longitude = float(longitude)
-
-    if not (latitude >= -180 and latitude <= 180):
-        return False
-
-    if not (longitude >= -90 and longitude <= 90):
-        return False
-
-    return True

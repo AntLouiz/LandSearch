@@ -22,22 +22,26 @@
                                 {{field}}
                             </p>
                         </div>
+                        {% if field.errors %}
+                            <div class="ui negative message">
+                              <i class="close icon"></i>
+                              <div class="header">
+                                  <ul class="ui list">
+                                      {% for error in field.errors %}
+                                          <li>{{error}}</li>
+                                      {% endfor %}
+                                  </ul>
+                              </div>
+                            </div>
+                        {% endif %}
                     {% endfor %}
                     <button
                         id='submit-button'
                         class="ui button"
                         type="submit"
                     >Submit</button>
-                </form>  
+                </form>
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(() => {
-            $('#order-form').submit(function(event) {
-               $(this).addClass('loading');
-               $('#submit-button').addClass('loading');
-            });
-        });
-    </script>
 {% endblock content %}

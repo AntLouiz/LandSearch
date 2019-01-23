@@ -30,3 +30,20 @@
         height: auto;
     }
 }
+
+.center-screen {
+    display: flex;
+    flex-direction: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 30rem;
+}
+
+@media (min-height: 320px) {
+  .ui.footer.form-page { /* Increased specificity for SO snippet priority */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+}

@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.contrib import messages
 from django.urls import reverse_lazy as r
 from django.views.generic.edit import DeleteView
 from django.views.generic.list import ListView
@@ -7,7 +8,7 @@ from django.views.generic import TemplateView
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from .models import Shapefile, Coordinates, ScrapingOrder
-from .utils import check_uploaded_file, check_coordinates
+from .utils import check_uploaded_file
 from .forms import OrderForm
 
 
@@ -29,9 +30,6 @@ def upload_file(request):
         if order_form.is_valid():
             latitude = request.POST['latitude']
             longitude = request.POST['longitude']
-
-            if not check_coordinates(latitude, longitude):
-                return HttpResponseRedirect('/')
 
             uploaded_file = request.FILES['file'].temporary_file_path()
             uploaded_filename = request.FILES['file'].name
@@ -70,9 +68,16 @@ def upload_file(request):
                 ScrapingOrder.objects.create(
                     coordinates=coordinates
                 )
-
-                return HttpResponseRedirect('/')
-
+                messages.success(
+                    request,
+                    'The order {} added successfull.'.format(
+                        request.POST['title']
+                    )
+                )
+                return HttpResponseRedirect(r('core:orders'))
+        else:
+            context = {'form': order_form}
+            return render(request, 'core/new_order.html', context)
     else:
         order_form = OrderForm()
 
