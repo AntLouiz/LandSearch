@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.contrib import messages
 from django.urls import reverse_lazy as r
 from django.views.generic.edit import DeleteView
 from django.views.generic.list import ListView
@@ -67,8 +68,13 @@ def upload_file(request):
                 ScrapingOrder.objects.create(
                     coordinates=coordinates
                 )
-
-                return HttpResponseRedirect('/')
+                messages.success(
+                    request,
+                    'The order {} added successfull.'.format(
+                        request.POST['title']
+                    )
+                )
+                return HttpResponseRedirect(r('core:orders'))
         else:
             context = {'form': order_form}
             return render(request, 'core/new_order.html', context)
