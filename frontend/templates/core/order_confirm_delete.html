@@ -10,8 +10,8 @@
       <p>Are you sure you want to delete "{{ object.coordinates.title }}"?</p>
     </div>
     <div class="image content">
-      <div class="ui medium image">
-        {% if order.raster %}
+      <div class="ui image">
+        {% if object.raster %}
             <img
                 src="{{object.raster.thumbnail_link}}"
                 alt=""
