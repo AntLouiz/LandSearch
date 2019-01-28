@@ -59,6 +59,8 @@ DATABASES = {
         cast=db_url),
 }
 
+# Celery config
+CELERY_BROKER_URL = config('broker_url', default='amqp://localhost')
 
 # Internationalization
 LANGUAGE_CODE = config('LANGUAGE_CODE', default='en-us')

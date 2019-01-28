@@ -10,14 +10,7 @@ from pydrive.drive import GoogleDrive
 from .models import Shapefile, Coordinates, ScrapingOrder
 from .utils import check_uploaded_file
 from .forms import OrderForm
-
-
-
-gauth = GoogleAuth()
-
-gauth.LocalWebserverAuth()
-
-drive = GoogleDrive(gauth)
+from tasks import add
 
 
 class HomeView(TemplateView):
@@ -98,6 +91,8 @@ class OrdersListView(ListView):
         orders = ScrapingOrder.objects.filter(is_active=True).all()
 
         context['orders'] = orders
+
+        add.delay(1, 1)
 
         return context
 
