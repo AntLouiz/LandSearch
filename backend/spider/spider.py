@@ -1,25 +1,18 @@
 import glob
 import os.path
 from datetime import datetime
-from settings import BASE_URL as base_url
-from settings import USGS_PASSWORD as password
-from settings import USGS_USERNAME as username
-from settings import TEMP_DIR
+from settings import (
+    BASE_URL as base_url,
+    USGS_PASSWORD as password,
+    USGS_USERNAME as username
+)
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from .decompressor import clean_file, check_zip_download_finished
-from .uploader import upload_file
-from .trimmer import crop_raster
+from .config import profile, options
 from .exceptions import ResultsNotFoundError
-from .config import (
-    download_dir,
-    temp_dir,
-    profile,
-    options
-)
 
 
 def make_login(client, credentials):
@@ -35,7 +28,6 @@ def make_login(client, credentials):
 
 
 def download_image(order, client):
-    print(">>> Trying to download the image")
     try:
         client.find_element_by_xpath(
             "(//td[@class='resultRowContent']//a[@class='download'])[1]"
@@ -68,7 +60,6 @@ def crawl(order):
     client.find_element_by_xpath(
         "//input[@id='coordEntryAdd']"
     ).click()
-    print(">>> Inserting the latitude and longitude.")
     input_lat = client.find_element_by_xpath(
         "//div[@aria-describedby='coordEntryDialogArea']//input[@class='latitude txtbox decimalBox']"
     )
@@ -92,7 +83,6 @@ def crawl(order):
     ).click()
 
     client.implicitly_wait(2)
-    print(">>> Searching the data set")
     client.find_element_by_xpath(
         "//input[@value='Data Sets »']"
     ).click()
@@ -132,45 +122,3 @@ def crawl(order):
     )
 
     download_button.click()
-    print(">>> Downloading the image.")
-
-
-def execute_scraping_order(order, shapefile_path):
-    profile_download_dir = os.path.join(temp_dir, str(order.key))
-    profile.set_preference('browser.download.dir', profile_download_dir)
-    crawl(order)
-    check_zip_download_finished(profile_download_dir)
-    print(">>> Download finished.")
-
-    downloaded_file = glob.glob("{}/*.zip".format(profile_download_dir))[0]
-    download_file_path = os.path.join(
-        download_dir,
-        str(datetime.now())
-    )
-
-    print(">>> Cleaning the file.")
-    clean_file(
-        downloaded_file,
-        download_file_path
-    )
-
-    upload_filename = "{}.tif".format(str(datetime.now()))
-    upload_file_path = glob.glob("{}/*.tif".format(
-        download_file_path
-    ))[0]
-
-    print(">>> Cropping the raster.")
-    crop_raster(
-        upload_file_path,
-        shapefile_path,
-        upload_file_path
-    )
-
-    print(">>> Uploading the file.")
-    upload_file(
-        upload_filename,
-        upload_file_path,
-        order
-    )
-
-    print(">>> Finished.")
