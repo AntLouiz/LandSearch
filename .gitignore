@@ -22,3 +22,8 @@ __pycache__/
 client_secrets.json
 credentials.json
 settings.yaml
+
+# Spider files
+celerybeat-schedule
+geckodriver.log
+/_temp
