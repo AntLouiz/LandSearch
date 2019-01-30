@@ -25,6 +25,7 @@ INSTALLED_APPS = [
 
     # Local apps
     'backend.core.apps.DefaultApp',
+    'backend.spider.apps.DefaultApp'
 ]
 
 
@@ -59,6 +60,8 @@ DATABASES = {
         cast=db_url),
 }
 
+# Celery config
+CELERY_BROKER_URL = config('broker_url', default='amqp://localhost')
 
 # Internationalization
 LANGUAGE_CODE = config('LANGUAGE_CODE', default='en-us')

@@ -5,13 +5,13 @@ from django.urls import reverse_lazy as r
 from django.views.generic.edit import DeleteView
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
+from django.core import serializers
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 from .models import Shapefile, Coordinates, ScrapingOrder
 from .utils import check_uploaded_file
 from .forms import OrderForm
-
-
+from backend.spider.tasks import crawl_order
 
 gauth = GoogleAuth()
 
@@ -65,9 +65,13 @@ def upload_file(request):
                     shapefile=shapefile
                 )
 
-                ScrapingOrder.objects.create(
+                order = ScrapingOrder.objects.create(
                     coordinates=coordinates
                 )
+
+                order = serializers.serialize("json", [order])
+                crawl_order.delay(order)
+
                 messages.success(
                     request,
                     'The order {} added successfull.'.format(
@@ -101,6 +105,7 @@ class OrdersListView(ListView):
 
         return context
 
+
 class OrderDeleteView(DeleteView):
     model = ScrapingOrder
     template_name = 'core/order_confirm_delete.html'
@@ -122,4 +127,3 @@ class OrderDeleteView(DeleteView):
         self.object.disable()
 
         return HttpResponseRedirect(success_url)
-
