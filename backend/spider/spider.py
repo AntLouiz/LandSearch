@@ -99,8 +99,6 @@ def crawl(order):
         "//input[@id='coll_12864']"
     ).click()
 
-    wait(client, 20).until(EC.visibility_of_element_located((By.XPATH, "/html/body/div[9]/div[3]/div/button[1]"))).click()
-
     client.find_element_by_xpath(
         "//form[@name='dataSetForm']//input[@value='Results »']"
     ).click()
