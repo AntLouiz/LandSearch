@@ -24,8 +24,6 @@ def make_login(client, credentials):
 
     client.find_element_by_xpath("//input[@id='loginButton']").click()
 
-    client.implicitly_wait(10)
-
 
 def download_image(order, client):
     try:
@@ -68,7 +66,7 @@ def crawl(order):
         "//div[@aria-describedby='coordEntryDialogArea']//input[@class='longitude txtbox decimalBox']"
     )
 
-    client.implicitly_wait(2)
+    client.implicitly_wait(1)
 
     input_lat.send_keys(
         str(latitude)
@@ -82,12 +80,13 @@ def crawl(order):
         "//div[@id='coordEntryDialogArea']/..//span[text()='Add']"
     ).click()
 
-    client.implicitly_wait(2)
+    client.implicitly_wait(1)
+
     client.find_element_by_xpath(
         "//input[@value='Data Sets »']"
     ).click()
 
-    client.implicitly_wait(5)
+    client.implicitly_wait(4)
 
     client.find_element_by_xpath("//li[@id='cat_210']/div").click()
 
@@ -109,9 +108,6 @@ def crawl(order):
 
     if login_button:
         login_button.click()
-
-        client.implicitly_wait(10)
-
         make_login(client, credentials)
         download_image(order, client)
 
