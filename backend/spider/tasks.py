@@ -27,13 +27,6 @@ def crawl_order(order):
         order = order.object
         logger.info(order.id)
 
-        # Downloading the shapefile
-        get_shapefile(
-            order.coordinates.shapefile.key
-        )
-        shapefile_dir = os.path.join(temp_dir, order.coordinates.shapefile.key)
-        shapefile_path = glob.glob("{}/*.shp".format(shapefile_dir))[0]
-
         # Set the profile download directory
         profile_download_dir = os.path.join(temp_dir, str(order.key))
         profile.set_preference('browser.download.dir', profile_download_dir)
@@ -50,6 +43,14 @@ def crawl_order(order):
             download_dir,
             str(datetime.now())
         )
+
+        # Downloading the shapefile
+        get_shapefile(
+            order.coordinates.shapefile.key
+        )
+        shapefile_dir = os.path.join(temp_dir, order.coordinates.shapefile.key)
+        shapefile_path = glob.glob("{}/*.shp".format(shapefile_dir))[0]
+
 
         # Cleaning the .zip file to catch just the TIR raster
         logger.info("Cleaning the file.")
