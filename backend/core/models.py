@@ -121,7 +121,9 @@ class ScrapingOrder(models.Model):
 
     def disable(self):
         self.is_active = False
-        self.raster.disable()
+        if self.raster:
+            self.raster.disable()
+
         self.coordinates.disable()
         self.coordinates.shapefile.disable()
         self.save()
