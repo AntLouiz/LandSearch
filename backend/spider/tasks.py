@@ -1,10 +1,10 @@
+from __future__ import absolute_import, unicode_literals
 import glob
 import os.path
 from datetime import datetime
 from django.core import serializers
-from celery import Celery
+from backend.celery import app
 from celery.utils.log import get_task_logger
-from settings import BROKER_URL as broker_url
 from .decompressor import clean_file, check_zip_download_finished
 from .spider import crawl
 from .trimmer import crop_raster
@@ -12,19 +12,19 @@ from .uploader import get_shapefile, upload_file
 from .config import (
     download_dir,
     temp_dir,
-    profile,
-    options
+    profile
 )
 
 
-app = Celery('tasks', broker=broker_url)
 logger = get_task_logger(__name__)
 
 
-@app.task
+@app.task()
 def crawl_order(order):
     for order in serializers.deserialize('json', order):
         order = order.object
+        order.status = 'executing'
+        order.save()
         logger.info(order.id)
 
         # Set the profile download directory

@@ -103,7 +103,7 @@ class ScrapingOrder(models.Model):
 
     choices = (
         ('Waiting', 'waiting'),
-        ('Scraping', 'scraping'),
+        ('Executing', 'executing'),
         ('Finished', 'finished'),
         ('No result', 'no_result')
     )

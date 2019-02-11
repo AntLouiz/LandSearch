@@ -1,6 +1,8 @@
+from __future__ import absolute_import, unicode_literals
 import os
-from celery import Celery
 import sys
+from celery import Celery
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
