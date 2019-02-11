@@ -7,12 +7,14 @@ from backend.spider.tasks import crawl_order
 @app.task()
 def check_orders():
     orders = ScrapingOrder.objects.filter(
-        status='waiting',
+        status='Waiting',
         is_active=True
     ).all()
 
     for order in orders:
+        order = serializers.serialize("json", [order])
         crawl_order.delay(order)
+
 
 app.conf.beat_schedule = {
     "check-orders": {

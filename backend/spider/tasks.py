@@ -23,6 +23,8 @@ logger = get_task_logger(__name__)
 def crawl_order(order):
     for order in serializers.deserialize('json', order):
         order = order.object
+        order.status = 'executing'
+        order.save()
         logger.info(order.id)
 
         # Set the profile download directory
