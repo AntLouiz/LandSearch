@@ -39,10 +39,6 @@ def crawl_order(order):
         logger.info("Download finished.")
 
         downloaded_file = glob.glob("{}/*.zip".format(profile_download_dir))[0]
-        download_file_path = os.path.join(
-            download_dir,
-            str(datetime.now())
-        )
 
         # Downloading the shapefile
         get_shapefile(
@@ -56,12 +52,12 @@ def crawl_order(order):
         logger.info("Cleaning the file.")
         clean_file(
             downloaded_file,
-            download_file_path
+            profile_download_dir
         )
 
         upload_filename = "{}.tif".format(str(datetime.now()))
         upload_file_path = glob.glob("{}/*.tif".format(
-            download_file_path
+            profile_download_dir
         ))[0]
 
         # Cropping the raster with a shapefile
