@@ -9,11 +9,7 @@ from .decompressor import clean_file, check_zip_download_finished
 from .spider import crawl
 from .trimmer import crop_raster
 from .uploader import get_shapefile, upload_file
-from .config import (
-    download_dir,
-    temp_dir,
-    profile
-)
+from .config import temp_dir, profile
 
 
 logger = get_task_logger(__name__)
