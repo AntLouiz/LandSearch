@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 import glob
 import os.path
+import shutil
 from datetime import datetime
 from django.core import serializers
 from backend.celery import app
@@ -77,3 +78,5 @@ def crawl_order(order):
         logger.info("Finished.")
         order.status = 'finished'
         order.save()
+
+        shutil.rmtree(profile_download_dir)

@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
@@ -47,8 +46,6 @@ def upload_file(filename, file_path, order):
 
     order.raster = new_raster
     order.save()
-
-    os.remove(file_path)
 
 
 def get_folder_id(parent, folder_id='root'):
