@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 import glob
 import os.path
+import shutil
 from datetime import datetime
 from django.core import serializers
 from backend.celery import app
@@ -9,11 +10,7 @@ from .decompressor import clean_file, check_zip_download_finished
 from .spider import crawl
 from .trimmer import crop_raster
 from .uploader import get_shapefile, upload_file
-from .config import (
-    download_dir,
-    temp_dir,
-    profile
-)
+from .config import temp_dir, profile
 
 
 logger = get_task_logger(__name__)
@@ -39,29 +36,26 @@ def crawl_order(order):
         logger.info("Download finished.")
 
         downloaded_file = glob.glob("{}/*.zip".format(profile_download_dir))[0]
-        download_file_path = os.path.join(
-            download_dir,
-            str(datetime.now())
-        )
 
         # Downloading the shapefile
         get_shapefile(
-            order.coordinates.shapefile.key
+            order.coordinates.shapefile.key,
+            profile_download_dir
         )
         shapefile_dir = os.path.join(temp_dir, order.coordinates.shapefile.key)
-        shapefile_path = glob.glob("{}/*.shp".format(shapefile_dir))[0]
+        shapefile_path = glob.glob("{}/*.shp".format(profile_download_dir))[0]
 
 
         # Cleaning the .zip file to catch just the TIR raster
         logger.info("Cleaning the file.")
         clean_file(
             downloaded_file,
-            download_file_path
+            profile_download_dir
         )
 
         upload_filename = "{}.tif".format(str(datetime.now()))
         upload_file_path = glob.glob("{}/*.tif".format(
-            download_file_path
+            profile_download_dir
         ))[0]
 
         # Cropping the raster with a shapefile
@@ -84,3 +78,5 @@ def crawl_order(order):
         logger.info("Finished.")
         order.status = 'finished'
         order.save()
+
+        shutil.rmtree(profile_download_dir)

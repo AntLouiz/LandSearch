@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
@@ -48,8 +47,6 @@ def upload_file(filename, file_path, order):
     order.raster = new_raster
     order.save()
 
-    os.remove(file_path)
-
 
 def get_folder_id(parent, folder_id='root'):
     f_list = get_folder_files(folder_id)
@@ -66,7 +63,7 @@ def get_folder_files(folder_id='root'):
     return f_list
 
 
-def get_shapefile(user_id, download_dir=temp_dir):
+def get_shapefile(file_id, output_dir):
     folder_id = get_folder_id('shapefiles')
     shapefiles = get_folder_files(folder_id)
 
@@ -74,17 +71,16 @@ def get_shapefile(user_id, download_dir=temp_dir):
         raise Exception('No shapefiles founded.')
 
     for shp in shapefiles:
-        file_id = shp['id']
+        shp_id = shp['id']
 
-        if file_id == user_id:
+        if shp_id == file_id:
             file_ext = shp['fileExtension']
-            file_path = "{}{}.{}".format(
-                temp_dir,
-                file_id,
+            file_path = "{}/{}.{}".format(
+                output_dir,
+                shp_id,
                 file_ext
             )
-            output_dir = os.path.join(temp_dir, user_id)
-            shapefile = drive.CreateFile({'id': file_id})
+            shapefile = drive.CreateFile({'id': shp_id})
 
             shapefile.GetContentFile(file_path)
 

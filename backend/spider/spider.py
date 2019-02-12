@@ -86,7 +86,7 @@ def crawl(order):
         "//input[@value='Data Sets »']"
     ).click()
 
-    client.implicitly_wait(1)
+    client.implicitly_wait(4)
 
     client.find_element_by_xpath("//li[@id='cat_210']/div").click()
 
