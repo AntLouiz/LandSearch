@@ -1,4 +1,5 @@
 import glob
+import re
 import os.path
 from datetime import datetime
 from settings import (
@@ -27,6 +28,18 @@ def make_login(client, credentials):
 
 def download_image(order, client):
     try:
+        acquisition_date = client.find_element_by_xpath(
+            "(//td[@class='resultRowContent']//li[3])[1]"
+        )
+
+        regex = re.compile(r'(?<=\:).*')
+        acquisition_date = re.search(regex, acquisition_date.text).group()
+        order.raster.acquisition_date = datetime.strptime(
+            acquisition_date,
+            "%d-%b-%y"
+        )
+        order.raster.save()
+
         client.find_element_by_xpath(
             "(//td[@class='resultRowContent']//a[@class='download'])[1]"
         ).click()
