@@ -19,16 +19,15 @@ class OrderForm(forms.ModelForm):
     def clean_latitude(self):
         cleaned_data = self.cleaned_data
         latitude = cleaned_data['latitude']
-        print(latitude < -180)
-        if latitude < (-180) or latitude > 180:
-            raise forms.ValidationError("Insert a latitude between the range -180 and 180.")
+        if latitude < (-90) or latitude > 90:
+            raise forms.ValidationError("The latitude must be between -90 and 90.")
 
         return latitude
 
     def clean_longitude(self):
         cleaned_data = self.cleaned_data
         longitude = cleaned_data['longitude']
-        if longitude < (-90) or longitude > 90:
-            raise forms.ValidationError("Insert a longitude between the range -90 and 90.")
+        if longitude < (-180) or longitude > 180:
+            raise forms.ValidationError("The longitude must be between -180 and 180.")
 
         return longitude
