@@ -11,6 +11,7 @@ from .spider import crawl
 from .trimmer import crop_raster
 from .uploader import get_shapefile, upload_file
 from .config import temp_dir, profile
+from .fetcher import OrderFetcher
 
 
 logger = get_task_logger(__name__)

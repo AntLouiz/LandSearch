@@ -23,6 +23,11 @@ class Raster(models.Model):
         default=uuid.uuid4,
         editable=False
     )
+    file_id = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True
+    )
     thumbnail_link = models.CharField(
         max_length=200,
         blank=True,
