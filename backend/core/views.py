@@ -127,7 +127,7 @@ class OrderDeleteView(DeleteView):
         shapefile.Trash()
 
         if raster:
-            raster_file = drive.CreateFile({'id': raster.key})
+            raster_file = drive.CreateFile({'id': raster.file_id})
             raster_file.Trash()
 
         self.object.disable()
