@@ -11,6 +11,7 @@ from .spider import crawl
 from .trimmer import crop_raster
 from .uploader import get_shapefile, upload_file
 from .config import temp_dir, profile
+from .fetcher import schedule_order
 
 
 logger = get_task_logger(__name__)
@@ -20,6 +21,18 @@ logger = get_task_logger(__name__)
 def crawl_order(order):
     for order in serializers.deserialize('json', order):
         order = order.object
+
+        if not order.is_active:
+            logger.info(
+                "The order {} is not active.".format(
+                    order.key
+                )
+            )
+            logger.info(
+                "Aborting..."
+            )
+            return 0
+
         order.status = 'executing'
         order.save()
         logger.info(order.id)
@@ -80,3 +93,5 @@ def crawl_order(order):
         order.save()
 
         shutil.rmtree(profile_download_dir)
+
+        schedule_order(order)

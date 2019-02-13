@@ -36,16 +36,13 @@ def upload_file(filename, file_path, order):
         'role': 'reader'
     })
 
-    new_raster = Raster.objects.create(
-        key=file['id'],
-        thumbnail_link=file['thumbnailLink'],
-        download_link=file['webContentLink'],
-        download_date=datetime.now(),
-        is_active=True
-    )
+    order.raster.file_id = file['id']
+    order.raster.thumbnail_link = file['thumbnailLink']
+    order.raster.download_link = file['webContentLink']
+    order.raster.download_date = datetime.now()
+    order.raster.is_active = True
 
-    order.raster = new_raster
-    order.save()
+    order.raster.save()
 
 
 def get_folder_id(parent, folder_id='root'):

@@ -8,7 +8,12 @@ from django.views.generic import TemplateView
 from django.core import serializers
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
-from .models import Shapefile, Coordinates, ScrapingOrder
+from .models import (
+    Shapefile,
+    Coordinates,
+    ScrapingOrder,
+    Raster
+)
 from .utils import check_uploaded_file
 from .forms import OrderForm
 from backend.spider.tasks import crawl_order
@@ -66,7 +71,8 @@ def upload_file(request):
                 )
 
                 order = ScrapingOrder.objects.create(
-                    coordinates=coordinates
+                    coordinates=coordinates,
+                    raster=Raster.objects.create()
                 )
 
                 order = serializers.serialize("json", [order])
@@ -121,7 +127,7 @@ class OrderDeleteView(DeleteView):
         shapefile.Trash()
 
         if raster:
-            raster_file = drive.CreateFile({'id': raster.key})
+            raster_file = drive.CreateFile({'id': raster.file_id})
             raster_file.Trash()
 
         self.object.disable()

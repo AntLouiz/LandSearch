@@ -19,17 +19,29 @@ class Shapefile(models.Model):
 
 
 class Raster(models.Model):
-    key = models.CharField(max_length=100)
+    key = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False
+    )
+    file_id = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True
+    )
     thumbnail_link = models.CharField(
-        max_length=200
+        max_length=200,
+        blank=True,
+        null=True
     )
     download_link = models.CharField(
-        max_length=200
+        max_length=200,
+        blank=True,
+        null=True
     )
-    download_date = models.DateField(
+    acquisition_date = models.DateField(
         blank=True,
         null=True,
-        auto_now_add=True
+        auto_now_add=False
     )
 
     is_active = models.BooleanField(default=True)
@@ -43,7 +55,7 @@ class Raster(models.Model):
         self.save()
 
     def __str__(self):
-        return self.thumbnail_link
+        return "{}".format(self.key)
 
 
 class Coordinates(models.Model):
@@ -94,9 +106,7 @@ class ScrapingOrder(models.Model):
 
     raster = models.ForeignKey(
         Raster,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True
+        on_delete=models.CASCADE
     )
 
     is_active = models.BooleanField(default=True)
