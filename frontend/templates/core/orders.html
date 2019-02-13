@@ -16,6 +16,8 @@
                     green
                   {% elif order.status == 'waiting'%}
                     blue
+                  {% elif order.status == 'executing'%}
+                    olive
                   {% else %}
                     red
                   {% endif %}
@@ -30,7 +32,7 @@
                         </a>
                 </div>
                 <div class="image">
-                    {% if order.raster %}
+                    {% if order.raster.thumbnail_link %}
                         <img
                             src="{{order.raster.thumbnail_link}}"
                             alt=""
@@ -44,10 +46,12 @@
                       <span class="status">Status: {{order.status}}</span>
                     </div>
                     <div class="meta">
-                        {% if order.status == 'waiting' %}
+                        {% if order.status == 'executing' %}
                             <span class="date">Collecting...</span>
-                        {% elif order.raster.download_date %}
-                            <span class="date">Colected in {{order.raster.download_date}}</span>
+                        {% elif order.status == 'waiting' %}
+                            <span class="date">Waiting for execution.</span>
+                        {% elif order.status == 'finished' %}
+                            <span class="date">Colected in {{order.scraped_date}}</span>
                         {% else %}
                             Region not collected.
                         {% endif %}
