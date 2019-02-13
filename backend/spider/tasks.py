@@ -11,7 +11,7 @@ from .spider import crawl
 from .trimmer import crop_raster
 from .uploader import get_shapefile, upload_file
 from .config import temp_dir, profile
-from .fetcher import OrderFetcher
+from .fetcher import schedule_order
 
 
 logger = get_task_logger(__name__)
@@ -81,3 +81,5 @@ def crawl_order(order):
         order.save()
 
         shutil.rmtree(profile_download_dir)
+
+        schedule_order(order)

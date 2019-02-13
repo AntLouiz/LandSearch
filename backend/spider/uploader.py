@@ -36,6 +36,7 @@ def upload_file(filename, file_path, order):
         'role': 'reader'
     })
 
+    order.raster.file_id = file['id']
     order.raster.thumbnail_link = file['thumbnailLink']
     order.raster.download_link = file['webContentLink']
     order.raster.download_date = datetime.now()
