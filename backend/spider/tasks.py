@@ -21,6 +21,18 @@ logger = get_task_logger(__name__)
 def crawl_order(order):
     for order in serializers.deserialize('json', order):
         order = order.object
+
+        if not order.is_active:
+            logger.info(
+                "The order {} is not active.".format(
+                    order.key
+                )
+            )
+            logger.info(
+                "Aborting..."
+            )
+            return 0
+
         order.status = 'executing'
         order.save()
         logger.info(order.id)
