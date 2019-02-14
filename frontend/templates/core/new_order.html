@@ -7,13 +7,15 @@
 
 
 {% block content %}
-    <div class="ui four column centered grid">
+    <div class="ui four column centered grid" style="margin: 3rem">
         <div class="row">
             <div class="eight wide column">
                 <form id='order-form' class="ui form" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <span>
-                        <h1 class="ui header">Insert the your interest region.</h1>
+                        <p>
+                            <h1 class="ui header">Create a new order to clip an region.</h1>
+                        </p>
                     </span>
                     {% for field in form %}
                         <div class="field">
@@ -35,11 +37,17 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-                    <button
-                        id='submit-button'
-                        class="ui button"
-                        type="submit"
-                    >Submit</button>
+                    <div class="ui">
+                        <div class="ui clearing segment">
+                            <button
+                                id='submit-button'
+                                class="ui primary button right floated"
+                                type="submit"
+                            >
+                                Submit
+                            </button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
