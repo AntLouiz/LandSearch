@@ -21,23 +21,23 @@
 </head>
 <body>
 	{% include "menu.html" %}
-    {% if messages %}
-        <ul class="messages">
-        {% for message in messages %}
-            <div class="ui message {{message.tags}}">
-              <i class="close icon"></i>
-              <div class="header">
-                  {{message}}
-              </div>
-            </div>
-        {% endfor %}
-        </ul>
-    {% endif %}
+    <div class="ui container">
+        {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+                <div class="ui message {{message.tags}}">
+                  <i class="close icon"></i>
+                  <div class="header">
+                      {{message}}
+                  </div>
+                </div>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 	<main id="{{ view.title|slugify }}">
 		{% block content %}{% endblock content %}
 	</main>
-    <div class="ui container" style="margin: 22.6rem">
-    </div>
     <div class="ui inverted vertical footer segment">
         <div class="ui container">
             <div class="ui grid">
