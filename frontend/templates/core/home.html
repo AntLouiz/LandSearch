@@ -8,9 +8,13 @@
 
 {% block content %}
     <center class='worked'>
-        <h1 class="gray">Welcome to LandSearch</h1>
+        <div class="ui huge header center aligned">
+            Just take what you need
+        </div>
+        <img src="{% static '/images/copy.png' %}">
+        <br>
         <a class="ui primary button" href="{% url 'core:new_order' %}">
-            Get a region
+            Try now
         </a>
     </center>
 {% endblock content %}
