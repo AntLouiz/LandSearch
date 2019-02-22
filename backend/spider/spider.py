@@ -11,7 +11,10 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import (
+    NoSuchElementException,
+    TimeoutException
+)
 from .config import profile, options
 from .exceptions import ResultsNotFoundError
 
@@ -51,6 +54,24 @@ def download_image(order, client):
         raise ResultsNotFoundError('No results found.')
 
 
+def check_modal(client):
+    """
+        Check if have an modal in the page and close it
+    """
+    modal_close_btn_xpath = "/html/body/div[9]/div[3]/div/button[1]"
+
+    try:
+        modal_close_btn = wait(client, 20).until(
+            EC.visibility_of_element_located((By.XPATH, modal_close_btn_xpath))
+        ).click()
+
+    except TimeoutException:
+        pass
+
+
+
+
+
 def crawl(order):
     latitude = order.coordinates.latitude
     longitude = order.coordinates.longitude
@@ -63,6 +84,8 @@ def crawl(order):
     client = webdriver.Firefox(firefox_profile=profile, options=options)
 
     response = client.get(base_url)
+
+    check_modal(client)
 
     coordinate_button = client.find_element_by_xpath("//div[@id='lat_lon_section']/label[2]")
     coordinate_button.click()
