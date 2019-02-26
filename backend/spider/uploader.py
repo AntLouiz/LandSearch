@@ -80,8 +80,3 @@ def get_shapefile(file_id, output_dir):
             shapefile = drive.CreateFile({'id': shp_id})
 
             shapefile.GetContentFile(file_path)
-
-            decompress_zip_file(
-                file_path,
-                output_dir
-            )

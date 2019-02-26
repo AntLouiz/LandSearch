@@ -56,8 +56,13 @@ def crawl_order(order):
             profile_download_dir
         )
         shapefile_dir = os.path.join(temp_dir, order.coordinates.shapefile.key)
-        shapefile_path = glob.glob("{}/*.shp".format(profile_download_dir))[0]
 
+        shapefile_path = "{}/{}.shp".format(
+            profile_download_dir,
+            order.coordinates.shapefile.key
+        )
+
+        print(shapefile_path)
 
         # Cleaning the .zip file to catch just the TIR raster
         logger.info("Cleaning the file.")
