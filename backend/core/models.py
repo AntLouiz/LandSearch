@@ -112,10 +112,10 @@ class ScrapingOrder(models.Model):
     is_active = models.BooleanField(default=True)
 
     choices = (
-        ('Waiting', 'waiting'),
-        ('Executing', 'executing'),
-        ('Finished', 'finished'),
-        ('No result', 'no_result')
+        ('waiting', 'waiting'),
+        ('executing', 'executing'),
+        ('finished', 'finished'),
+        ('no result', 'no_result')
     )
 
     status = models.CharField(
