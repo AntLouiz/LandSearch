@@ -22,6 +22,7 @@ __pycache__/
 client_secrets.json
 credentials.json
 settings.yaml
+mycreds.txt
 
 # Spider files
 celerybeat-schedule
