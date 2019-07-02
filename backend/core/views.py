@@ -6,8 +6,6 @@ from django.views.generic.edit import DeleteView
 from django.views.generic.list import ListView
 from django.views.generic import TemplateView
 from django.core import serializers
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
 from .models import (
     Shapefile,
     Coordinates,
@@ -17,12 +15,7 @@ from .models import (
 from .utils import check_uploaded_file
 from .forms import OrderForm
 from backend.spider.tasks import crawl_order
-
-gauth = GoogleAuth()
-
-gauth.LocalWebserverAuth()
-
-drive = GoogleDrive(gauth)
+from backend.spider.auth import auth_drive
 
 
 class HomeView(TemplateView):
@@ -33,6 +26,8 @@ def upload_file(request):
     if request.method == 'POST':
         order_form = OrderForm(request.POST, request.FILES)
         if order_form.is_valid():
+            drive = auth_drive()
+
             latitude = request.POST['latitude']
             longitude = request.POST['longitude']
 

@@ -7,7 +7,7 @@ from backend.spider.tasks import crawl_order
 @app.task()
 def check_orders():
     orders = ScrapingOrder.objects.filter(
-        status='Waiting',
+        status='waiting',
         is_active=True
     ).all()
 

@@ -1,19 +1,12 @@
 from datetime import datetime
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
 from .config import temp_dir
 from .decompressor import decompress_zip_file
 from backend.core.models import Raster
-
-
-gauth = GoogleAuth()
-
-gauth.LocalWebserverAuth()
-
-drive = GoogleDrive(gauth)
-
+from .auth import auth_drive
 
 def upload_file(filename, file_path, order):
+    drive = auth_drive()
+
     f_list = drive.ListFile({
         'q': "'root' in parents and trashed=false"
     }).GetList()
@@ -52,6 +45,8 @@ def get_folder_id(parent, folder_id='root'):
 
 
 def get_folder_files(folder_id='root'):
+    drive = auth_drive()
+
     f_list = drive.ListFile({
         'q': "'{}' in parents and trashed=false".format(
             folder_id
@@ -61,6 +56,8 @@ def get_folder_files(folder_id='root'):
 
 
 def get_shapefile(file_id, output_dir):
+    drive = auth_drive()
+
     folder_id = get_folder_id('shapefiles')
     shapefiles = get_folder_files(folder_id)
 
